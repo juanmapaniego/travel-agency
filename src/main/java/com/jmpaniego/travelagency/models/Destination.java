@@ -1,13 +1,15 @@
 package com.jmpaniego.travelagency.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Destination {
+public class Destination implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String name;
     private String description;
 
@@ -16,6 +18,11 @@ public class Destination {
                 joinColumns = @JoinColumn(name = "destination_id"),
                 inverseJoinColumns = @JoinColumn(name = "station_id"))
     Set<Station> preferedStation;
+
+    public Destination(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Destination() {
     }

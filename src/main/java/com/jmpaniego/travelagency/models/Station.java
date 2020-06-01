@@ -1,31 +1,21 @@
 package com.jmpaniego.travelagency.models;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
 
 @Entity
-public class Station {
+public class Station implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String name;
-
-    @ManyToMany(mappedBy = "preferedStation")
-    Set<Destination> destinations;
 
     public Station() {
     }
 
     public Station(String name) {
         this.name = name;
-    }
-
-    public Set<Destination> getDestinations() {
-        return destinations;
-    }
-
-    public void setDestinations(Set<Destination> destinations) {
-        this.destinations = destinations;
     }
 
     public Long getId() {
@@ -42,5 +32,13 @@ public class Station {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Station{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
