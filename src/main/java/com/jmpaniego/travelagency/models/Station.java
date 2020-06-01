@@ -13,15 +13,19 @@ public class Station {
     @ManyToMany(mappedBy = "preferedStation")
     Set<Destination> destinations;
 
+    public Station() {
+    }
+
+    public Station(String name) {
+        this.name = name;
+    }
+
     public Set<Destination> getDestinations() {
         return destinations;
     }
 
     public void setDestinations(Set<Destination> destinations) {
         this.destinations = destinations;
-    }
-
-    public Station() {
     }
 
     public Long getId() {
