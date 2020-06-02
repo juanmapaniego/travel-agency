@@ -26,4 +26,8 @@ public class StationService {
     public Station findById(Long id) {
         return stationRepository.findById(id).orElseThrow(()->new RuntimeException("No station with id "+ id));
     }
+
+    public void delete(Long id){
+        stationRepository.deleteById(id);
+    }
 }

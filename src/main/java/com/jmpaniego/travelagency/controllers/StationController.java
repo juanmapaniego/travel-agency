@@ -47,6 +47,12 @@ public class StationController {
         return new ResponseEntity<>(dbStation, HttpStatus.OK);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        stationService.delete(id);
+        return new ResponseEntity<>("Deleted station with id "+id, HttpStatus.OK);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> errorGeneral(Exception e, HttpServletRequest request) {
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
