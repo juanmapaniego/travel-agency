@@ -4,6 +4,8 @@ import com.jmpaniego.travelagency.models.Destination;
 import com.jmpaniego.travelagency.models.Station;
 import com.jmpaniego.travelagency.repositories.DestinationRepository;
 import com.jmpaniego.travelagency.repositories.StationRepository;
+import com.jmpaniego.travelagency.security.user.Role;
+import com.jmpaniego.travelagency.security.user.RoleRepository;
 import com.jmpaniego.travelagency.security.user.User;
 import com.jmpaniego.travelagency.security.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -12,9 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 public class TravelAgencyApplication {
@@ -28,7 +28,8 @@ public class TravelAgencyApplication {
 	public CommandLineRunner init(StationRepository stationRepository,
 								  DestinationRepository destinationRepository,
 								  PasswordEncoder passwordEncoder,
-								  UserRepository userRepository){
+								  UserRepository userRepository,
+								  RoleRepository roleRepository){
 		return args -> {
 			// Add stations
 			Set<Station> stations = new HashSet<>();
@@ -50,9 +51,14 @@ public class TravelAgencyApplication {
 			destinationRepository.save(bariloche);
 
 			//create USER
+			ArrayList<Role> roles = new ArrayList<>();
+			roles.add(new Role("ROLE_USER"));
+			roles.add(new Role("ROLE_ADMIN"));
+			roleRepository.saveAll(roles);
+
 			User user = new User("user",
 					passwordEncoder.encode("user"),
-					new ArrayList<>(),
+					roles,
 					true,
 					true,
 					true,

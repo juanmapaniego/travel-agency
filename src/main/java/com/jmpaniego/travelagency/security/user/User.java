@@ -1,17 +1,16 @@
 package com.jmpaniego.travelagency.security.user;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
-public class User implements UserDetails {
+public class User {
     private static final long serialVersionUID = 2396654715019746670L;
 
     @Id
@@ -19,14 +18,14 @@ public class User implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    /*@ManyToMany
+    @ManyToMany
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;*/
+    private Collection<Role> roles;
     private boolean accountNonLocked;
     private boolean enabled;
     private boolean accountNonExpired;
@@ -51,13 +50,9 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
-        return new ArrayList<>();
+    public void setRoles(Collection<Role> grantedAuthorities) {
+        this.roles = grantedAuthorities;
     }
-
-    /*public void setGrantedAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
-        this.roles = (Collection<Role>) grantedAuthorities;
-    }*/
 
     public void setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
@@ -84,45 +79,38 @@ public class User implements UserDetails {
                 boolean credentialsNonExpired) {
         this.username = username;
         this.password = password;
-        //this.roles = grantedAuthorities;
+        this.roles = grantedAuthorities;
         this.accountNonLocked = accountNonLocked;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
 
-    @Override
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
 
-    @Override
     public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
 
-    @Override
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
 
-    @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
     }
 }
